@@ -162,7 +162,7 @@ echo
 
 echo "POST invoke chaincode with Create fcn on peers of Org1 and Org2"
 echo
-VALUES=$(curl -s -X POST \
+curl -s -X POST \
   http://localhost:4000/channels/mychannel/chaincodes/mycc \
   -H "authorization: Bearer $ORG1_TOKEN" \
   -H "content-type: application/json" \
@@ -170,11 +170,8 @@ VALUES=$(curl -s -X POST \
   \"peers\": [\"peer0.org1.example.com\",\"peer0.org2.example.com\"],
   \"fcn\":\"createGadget\",
   \"args\":[\"GD2\",\"Black\",\"Asus\",\"ROG\",\"Karl\"]
-}")
-echo $VALUES
-# Assign previous invoke transaction id  to TRX_ID
-MESSAGE=$(echo $VALUES | jq -r ".message")
-TRX_ID=${MESSAGE#*ID: }
+}"
+echo
 echo
 
 echo "GET query chaincode on peer1 of Org1"
@@ -188,19 +185,16 @@ echo
 
 echo "POST invoke chaincode with change fcn on peers of Org1 and Org2"
 echo
-VALUES=$(curl -s -X POST \
+curl -s -X POST \
   http://localhost:4000/channels/mychannel/chaincodes/mycc \
   -H "authorization: Bearer $ORG1_TOKEN" \
   -H "content-type: application/json" \
   -d "{
   \"peers\": [\"peer0.org1.example.com\",\"peer0.org2.example.com\"],
   \"fcn\":\"changeOwner\",
-  \"args\":[\"GD2\",\"Max\"]
-}")
-echo $VALUES
-# Assign previous invoke transaction id  to TRX_ID
-MESSAGE=$(echo $VALUES | jq -r ".message")
-TRX_ID=${MESSAGE#*ID: }
+  \"args\":[\"GD2\",\"Katy\"]
+}"
+echo
 echo
 
 echo "GET query chaincode on peer1 of Org1"
